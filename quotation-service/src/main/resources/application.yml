@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: quotation-service
+
+  ## consul discovery
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+        heartbeat:
+          enabled: true
+        ## spring cloud is using ip-address
+        hostname: localhost
+    loadbalancer:
+      ribbon:
+        enabled: false
+
+  ## datasource configuration
+  datasource:
+    username: root
+    password: mysql
+    url: jdbc:mysql://localhost:3306/poc_quotation
+
+## graphql configuration
+graphql:
+  federation:
+    enabled: true
+  packages: com.turnkey.poc.quotation
+
+server:
+  port: 0

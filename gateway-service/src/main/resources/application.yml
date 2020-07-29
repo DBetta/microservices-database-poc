@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: client-service
+          uri: lb://client-service
+          predicates:
+            - Path=/client-service/**
+          filters:
+            - RewritePath=/client-service/(?<segment>.*), /$\{segment}
+            # Add following Filter Response header in order to remove duplicates CORS value for a Http Header
+            - DedupeResponseHeader=Access-Control-Allow-Origin, RETAIN_UNIQUE
+        - id: quotation-service
+          uri: lb://quotation-service
+          predicates:
+            - Path=/quotation-service/**
+          filters:
+            - RewritePath=/quotation-service/(?<segment>.*), /$\{segment}
+            # Add following Filter Response header in order to remove duplicates CORS value for a Http Header
+            - DedupeResponseHeader=Access-Control-Allow-Origin, RETAIN_UNIQUE
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/notification-service/**
+          filters:
+            - RewritePath=/notification-service/(?<segment>.*), /$\{segment}
+            # Add following Filter Response header in order to remove duplicates CORS value for a Http Header
+            - DedupeResponseHeader=Access-Control-Allow-Origin, RETAIN_UNIQUE
+      discovery:
+        locator:
+          enabled: true
+    loadbalancer:
+      ribbon:
+        enabled: false
+    ## consul discovery
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+        heartbeat:
+          enabled: true
+
+server:
+  port: 8762
