@@ -23,6 +23,10 @@ spring:
     password: mysql
     url: jdbc:mysql://localhost:3306/poc_quotation
 
+  jpa:
+    hibernate:
+      ddl-auto: update
+
 ## graphql configuration
 graphql:
   federation:
