@@ -33,4 +33,14 @@ class QuoteServiceImpl(
     override suspend fun getQuotes(): List<QuoteDto> = withContext(Dispatchers.IO) {
         quoteEntityRepository.findAll()
     }.map { quoteMapper.map(quoteEntity = it) }
+
+    override suspend fun getClientQuotes(clientCodes: List<String>): List<QuoteDto> {
+
+        if (clientCodes.isEmpty())
+            return emptyList()
+
+        return withContext(Dispatchers.IO) {
+            quoteEntityRepository.getClientQuotes(clientCodes = clientCodes)
+        }.map { quoteMapper.map(it) }
+    }
 }

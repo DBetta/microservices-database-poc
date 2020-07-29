@@ -10,6 +10,8 @@ plugins {
 
 dependencies {
 
+    // graphql
+    implementation("com.expediagroup:graphql-kotlin-spring-server:3.4.1")
 }
 
 tasks.getByName<BootJar>("bootJar"){

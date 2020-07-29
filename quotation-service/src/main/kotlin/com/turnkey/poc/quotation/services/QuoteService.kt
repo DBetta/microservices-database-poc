@@ -13,4 +13,6 @@ interface QuoteService {
 
     suspend fun getQuotes(): List<QuoteDto>
 
+    suspend fun getClientQuotes(clientCodes: List<String>): List<QuoteDto>
+
 }
